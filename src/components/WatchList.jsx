@@ -7,8 +7,7 @@ export const WatchList = () => {
 
   return bookmarks.length ? (
     <section className="watchlist-section">
-      <h3 className="category-heading watchlist">Watchlist</h3>
-
+      <h2 className="category-head">Watchlist</h2>
       <section className="movies">
         {bookmarks && bookmarks.length
           ? bookmarks

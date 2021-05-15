@@ -63,10 +63,14 @@ export const Navbar = () => {
           Browse
         </NavLink>
         <NavLink to="/favourites">
-          <img className="nav-link" src={HeartIcon} alt="like" />
+          <img className="nav-link favourites" src={HeartIcon} alt="like" />
         </NavLink>
         <NavLink to="/watchlist">
-          <img className="nav-link" src={BookmarkIcon} alt="bookmark" />
+          <img
+            className="nav-link watchlist"
+            src={BookmarkIcon}
+            alt="bookmark"
+          />
         </NavLink>
       </div>
     </nav>

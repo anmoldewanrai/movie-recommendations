@@ -4,8 +4,6 @@ import { Movie } from ".";
 import "dotenv/config";
 
 export const Movies = () => {
-  const head = "https://api.themoviedb.org/3/movie/";
-  const tail = "&language=en-US&page=";
   const categories = [
     {
       name: "Top Rated",
@@ -29,24 +27,8 @@ export const Movies = () => {
     },
   ];
 
-  const { movies, fetchMovies, categoryHead, updateCategory } =
+  const { movies, loadMoreMovies, categoryHead, updateCategory } =
     useContext(MovieContext);
-
-  const getMovies = async (key, name) => {
-    updateCategory(key, name);
-
-    try {
-      let newList = [];
-      const moviesObj = await fetch(
-        `${head}${key}?api_key=${process.env.REACT_APP_API_KEY}${tail}1`
-      );
-      const moviesList = await moviesObj.json();
-      newList = [...moviesList.results];
-      updateCategory(newList);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <section className="top-rated-movies-section">
@@ -56,7 +38,7 @@ export const Movies = () => {
             key={categoryItem.key}
             className="category-heading"
             onClick={() => {
-              getMovies(categoryItem.key, categoryItem.name);
+              updateCategory(categoryItem);
             }}
           >
             {categoryItem.name}
@@ -77,7 +59,7 @@ export const Movies = () => {
         <div className="load-more-btn">
           <p
             onClick={() => {
-              fetchMovies();
+              loadMoreMovies();
             }}
           >
             Load More

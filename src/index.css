@@ -83,6 +83,24 @@ nav {
   color: var(--font-main);
 }
 
+.favourites:hover {
+  -webkit-filter: saturate(100%) brightness(0) invert(100%) sepia(36%)
+    saturate(3009%) hue-rotate(37deg) brightness(89%) contrast(84%);
+  filter: saturate(100%) brightness(0) invert(100%) sepia(36%) saturate(3009%)
+    hue-rotate(37deg) brightness(89%) contrast(84%);
+  -webkit-filter: saturate(100%) brightness(0) invert(37%) sepia(99%)
+    saturate(1571%) hue-rotate(333deg) brightness(105%) contrast(111%);
+  filter: saturate(100%) brightness(0) invert(37%) sepia(99%) saturate(1571%)
+    hue-rotate(333deg) brightness(105%) contrast(111%);
+}
+
+.watchlist:hover {
+  -webkit-filter: saturate(100%) brightness(0) invert(93%) sepia(22%)
+    saturate(5710%) hue-rotate(325deg) brightness(104%) contrast(103%);
+  filter: saturate(100%) brightness(0) invert(93%) sepia(22%) saturate(5710%)
+    hue-rotate(325deg) brightness(104%) contrast(103%);
+}
+
 .site-logo {
   display: flex;
   align-items: center;
@@ -125,7 +143,6 @@ nav {
     url("./assets/backdrop_img.jpg");
   background-repeat: no-repeat;
   background-size: 100%;
-
   background-attachment: fixed;
 }
 
@@ -174,15 +191,8 @@ nav {
   margin-top: 2rem;
 }
 
-.watchlist::before {
-  content: "";
-}
-.watchlist::after {
-  content: " ✔️";
-}
-
 .movies {
-  margin: 4rem 0;
+  padding: 4rem 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;

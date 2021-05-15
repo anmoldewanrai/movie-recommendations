@@ -13,14 +13,31 @@ export const MovieContextProvider = (props) => {
   const [page, setPage] = useState(1);
 
   const searchResults = (results) => {
-    setCategory("search Results");
+    setCategoryHead("Search Results");
     setMovies(results);
   };
 
-  const updateCategory = (newList) => {
-    setMovies([...movies, ...newList]);
+  const updateCategory = (categoryitem) => {
+    setMovies([]);
+    setPage(1);
+    setCategory(categoryitem.key);
+    setCategoryHead(categoryitem.name);
+    fetchMovies();
   };
 
+  const fetchMovies = async () => {
+    try {
+      const moviesObj = await fetch(
+        `${head}${category}?api_key=${process.env.REACT_APP_API_KEY}${tail}${page}`
+      );
+      const moviesList = await moviesObj.json();
+      setMovies([...moviesList.results]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //Bookmark state
   const [bookmarks, dispatchBookmarks] = useReducer(
     watchlistReducer,
     [],
@@ -31,15 +48,14 @@ export const MovieContextProvider = (props) => {
   );
 
   useEffect(() => {
-    fetchMovies(1);
+    fetchMovies();
   }, []);
 
   useEffect(() => {
     localStorage.setItem("watchlist", JSON.stringify(bookmarks));
   }, [bookmarks]);
 
-  const fetchMovies = async () => {
-    console.log(category);
+  const loadMoreMovies = async () => {
     setPage(page + 1);
     try {
       let newList = [];
@@ -57,13 +73,13 @@ export const MovieContextProvider = (props) => {
     <MovieContext.Provider
       value={{
         movies,
+        loadMoreMovies,
         category,
         categoryHead,
         updateCategory,
         bookmarks,
         searchResults,
         dispatchBookmarks,
-        fetchMovies,
       }}
     >
       {props.children}
