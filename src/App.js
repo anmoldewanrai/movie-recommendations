@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+// Dependency Imports
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-function App() {
+// Component Imports
+import { Navbar, Hero, Movies, WatchList } from "./components";
+
+// Context Imports
+import MovieContextProvider from "./contexts/MovieContext.jsx";
+
+export const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MovieContextProvider>
+      <div className="movie-container">
+        <Router>
+          <Navbar />
+          <Hero />
+          <Switch>
+            <Route exact path="/">
+              <Movies />
+            </Route>
+            <Route path="/watchlist">
+              <WatchList />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    </MovieContextProvider>
   );
-}
-
-export default App;
+};
