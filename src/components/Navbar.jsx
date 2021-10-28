@@ -7,7 +7,7 @@ import "dotenv/config";
 
 import siteLogo from "../assets/site_logo.png";
 import searchIcon from "../assets/search_icon.svg";
-import BookmarkIcon from "../assets/bookmark_svg.svg";
+import WatchlistIcon from "../assets/watchlist_icon.svg";
 import HeartIcon from "../assets/heart_icon.png";
 
 export const Navbar = () => {
@@ -16,6 +16,7 @@ export const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const searchMovies = async (query) => {
+    console.log(query);
     try {
       const searchObj = await fetch(
         `${head}${process.env.REACT_APP_API_KEY}&query=${query}&language=en-US&page=1&include_adult=false`
@@ -63,13 +64,19 @@ export const Navbar = () => {
           Browse
         </NavLink>
         <NavLink to="/favourites">
-          <img className="nav-link favourites" src={HeartIcon} alt="like" />
+          <img
+            title="Favourites"
+            className="nav-link favourites"
+            src={HeartIcon}
+            alt="like"
+          />
         </NavLink>
         <NavLink to="/watchlist">
           <img
+            title="Watchlist"
             className="nav-link watchlist"
-            src={BookmarkIcon}
-            alt="bookmark"
+            src={WatchlistIcon}
+            alt="watchlist"
           />
         </NavLink>
       </div>

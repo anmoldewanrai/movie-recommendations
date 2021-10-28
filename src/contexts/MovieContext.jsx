@@ -18,7 +18,7 @@ export const MovieContextProvider = (props) => {
   };
 
   const updateCategory = (categoryitem) => {
-    setMovies([]);
+    // setMovies([]);
     setPage(1);
     setCategory(categoryitem.key);
     setCategoryHead(categoryitem.name);
@@ -26,19 +26,21 @@ export const MovieContextProvider = (props) => {
   };
 
   const fetchMovies = async () => {
-    try {
-      const moviesObj = await fetch(
-        `${head}${category}?api_key=${process.env.REACT_APP_API_KEY}${tail}${page}`
-      );
-      const moviesList = await moviesObj.json();
-      setMovies([...moviesList.results]);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const moviesObj = await fetch(
+    //     `${head}${category}?api_key=${process.env.REACT_APP_API_KEY}${tail}${page}`
+    //   );
+    //   const moviesList = await moviesObj.json();
+    //   setMovies([...moviesList.results]);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+    let localTMDB = JSON.parse(localStorage.getItem("results"));
+    setMovies([...localTMDB]);
   };
 
-  //Bookmark state
-  const [bookmarks, dispatchBookmarks] = useReducer(
+  //Watchlist state
+  const [watchlist, dispatchWatchlist] = useReducer(
     watchlistReducer,
     [],
     () => {
@@ -47,20 +49,37 @@ export const MovieContextProvider = (props) => {
     }
   );
 
+  // Favourites state
+  const [favourites, dispatchFavourites] = useReducer(
+    favouritesReducer,
+    [],
+    () => {
+      let localData = localStorage.getItem("favourites");
+      return localData ? JSON.parse(localData) : [];
+    }
+  );
+
+  // USE EFFECTS
   useEffect(() => {
     fetchMovies();
-  }, []);
+  }, [category]);
 
   useEffect(() => {
-    localStorage.setItem("watchlist", JSON.stringify(bookmarks));
-  }, [bookmarks]);
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+  }, [watchlist]);
+
+  useEffect(() => {
+    localStorage.setItem("favourites", JSON.stringify(favourites));
+  }, [favourites]);
 
   const loadMoreMovies = async () => {
     setPage(page + 1);
     try {
       let newList = [];
       const moviesObj = await fetch(
-        `${head}${category}?api_key=${process.env.REACT_APP_API_KEY}${tail}${page}`
+        `${head}${category}?api_key=${process.env.REACT_APP_API_KEY}${tail}${
+          page + 1
+        }`
       );
       const moviesList = await moviesObj.json();
       newList = [...moviesList.results];
@@ -77,9 +96,11 @@ export const MovieContextProvider = (props) => {
         category,
         categoryHead,
         updateCategory,
-        bookmarks,
+        watchlist,
+        favourites,
         searchResults,
-        dispatchBookmarks,
+        dispatchFavourites,
+        dispatchWatchlist,
       }}
     >
       {props.children}

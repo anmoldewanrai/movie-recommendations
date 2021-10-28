@@ -49,7 +49,12 @@ export const Movies = () => {
       <section className="movies">
         {movies && movies.length ? (
           movies.map((movie) => (
-            <Movie key={movie.id} {...movie} bookmarked={false} />
+            <Movie
+              key={movie.id}
+              {...movie}
+              inWatchlist={false}
+              inFavourites={false}
+            />
           ))
         ) : (
           <h1>Fetch failed!</h1>

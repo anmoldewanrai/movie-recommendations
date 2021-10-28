@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 // Component Imports
-import { Navbar, Hero, Movies, WatchList } from "./components";
+import { Navbar, Hero, Movies, WatchList, Favourites } from "./components";
 
 // Context Imports
 import MovieContextProvider from "./contexts/MovieContext.jsx";
@@ -18,6 +18,9 @@ export const App = () => {
           <Switch>
             <Route exact path="/">
               <Movies />
+            </Route>
+            <Route path="/favourites">
+              <Favourites />
             </Route>
             <Route path="/watchlist">
               <WatchList />

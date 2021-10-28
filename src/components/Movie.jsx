@@ -3,8 +3,9 @@ import { MovieContext } from "../contexts/MovieContext.jsx";
 import { motion } from "framer-motion";
 
 // Assets import
-import BookmarkIcon from "../assets/bookmark_svg.svg";
+import WatchlistIcon from "../assets/watchlist_icon.svg";
 import HeartIcon from "../assets/heart_svg.svg";
+import FallbackPoster from "../assets/fallback_poster.jpg";
 
 const IMG_API = "https://image.tmdb.org/t/p/w1280";
 export const Movie = ({
@@ -13,9 +14,10 @@ export const Movie = ({
   poster_path,
   overview,
   vote_average,
-  bookmarked,
+  inWatchlist,
+  inFavourites,
 }) => {
-  const { dispatchBookmarks } = useContext(MovieContext);
+  const { dispatchFavourites, dispatchWatchlist } = useContext(MovieContext);
   let note = "Recommend a friend";
   note = false;
   const setVoteColor = (avg) => {
@@ -28,14 +30,14 @@ export const Movie = ({
     }
   };
 
-  const bookmarkMovie = (bookmarked) => {
-    console.log(bookmarked);
-    bookmarked
-      ? dispatchBookmarks({
+  const addToWatchlist = (inWatchlist) => {
+    console.log(inWatchlist);
+    inWatchlist
+      ? dispatchWatchlist({
           type: "REMOVE_BOOKMARK",
           id,
         })
-      : dispatchBookmarks({
+      : dispatchWatchlist({
           type: "ADD_BOOKMARK",
           movie: {
             id,
@@ -43,7 +45,25 @@ export const Movie = ({
             poster_path,
             overview,
             vote_average,
-            bookmarked: true,
+            inWatchlist: true,
+          },
+        });
+  };
+  const addToFavourites = (inFavourites) => {
+    inFavourites
+      ? dispatchFavourites({
+          type: "REMOVE_FAVOURITE",
+          id,
+        })
+      : dispatchFavourites({
+          type: "ADD_FAVOURITE",
+          movie: {
+            id,
+            title,
+            poster_path,
+            overview,
+            vote_average,
+            inFavourites: true,
           },
         });
   };
@@ -55,7 +75,11 @@ export const Movie = ({
       transition={{ delay: 0.5 }}
       className="movie"
     >
-      <img loading="lazy" src={IMG_API + poster_path} alt={title} />
+      <img
+        loading="lazy"
+        src={poster_path ? IMG_API + poster_path : FallbackPoster}
+        alt={title}
+      />
       <div className="movie-info">
         <h3>{title}</h3>
         <span className={`tag ${setVoteColor(vote_average)}`}>
@@ -65,12 +89,19 @@ export const Movie = ({
       <div className="movie-over">
         <div className="moive-options">
           <img
-            src={BookmarkIcon}
-            onClick={() => bookmarkMovie(bookmarked)}
+            title="Add To Watchlist"
+            src={WatchlistIcon}
+            onClick={() => addToWatchlist(inWatchlist)}
             className="option-icon bookmark"
             alt="bookmark"
           />
-          <img src={HeartIcon} className="option-icon heart" alt="like" />
+          <img
+            title="Add To Favorites"
+            src={HeartIcon}
+            onClick={() => addToFavourites(inFavourites)}
+            className="option-icon heart"
+            alt="like"
+          />
         </div>
         <h2>Overview</h2>
 
